@@ -1,7 +1,9 @@
+import path from 'node:path'
 import prompts from 'prompts'
 import { reset, red } from 'kolorist'
 import { FRAMEWORKS, TEMPLATES } from './constants'
 import type { Framework } from './constants'
+import { pkgFromUserAgent } from './utils'
 console.log('TEMPLATES: ', TEMPLATES)
 const cwd = process.cwd()
 
@@ -49,5 +51,18 @@ async function init() {
   }
   console.log('result-----', result)
   console.log('run------------')
+  // user choice associated with prompts
+  const { framework, overwrite, packageName, variant } = result
+
+  // determine template
+  const template: string = variant || framework?.name
+
+  const pkgInfo = pkgFromUserAgent(process.env.npm_config_user_agent)
+
+  const pkgManager = pkgInfo ? pkgInfo.name : 'npm'
+  const isYarn1 = pkgManager === 'yarn' && pkgInfo?.version.startsWith('1.')
+
+  const templateDir = path.resolve('./template', `${template}`)
+  console.log('templateDir: ', templateDir)
 }
 init()
