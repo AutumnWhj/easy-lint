@@ -1,4 +1,5 @@
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import prompts from 'prompts'
 import { reset, red } from 'kolorist'
 import { FRAMEWORKS, TEMPLATES } from './constants'
@@ -62,7 +63,9 @@ async function init() {
   const pkgManager = pkgInfo ? pkgInfo.name : 'npm'
   const isYarn1 = pkgManager === 'yarn' && pkgInfo?.version.startsWith('1.')
 
-  const templateDir = path.resolve('./template', `${template}`)
+  // const templateDir = path.resolve('./template', `${template}`)
+
+  const templateDir = path.resolve(fileURLToPath(import.meta.url), '../../template', `${template}`)
   console.log('templateDir: ', templateDir)
 }
 init()

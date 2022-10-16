@@ -24,6 +24,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "template"],
   "exclude": ["node_modules", "dist", "**/*.js"]
 }
