@@ -51,8 +51,6 @@
   // JS(ON)
   // ===
 
-  "jest.autoEnable": true,
-  "jest.enableCodeLens": true,
   "javascript.format.enable": false,
   "json.format.enable": false,
   "vetur.validation.script": false,

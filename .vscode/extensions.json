@@ -24,6 +24,6 @@
 
     // Test `.unit.js` files on save with Jest
     // https://github.com/jest-community/vscode-jest
-    "Orta.vscode-jest"
+    // "Orta.vscode-jest"
   ]
 }
