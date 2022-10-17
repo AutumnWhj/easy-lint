@@ -1,9 +1,9 @@
 import prompts from 'prompts'
 import { reset, red } from 'kolorist'
-import { FRAMEWORKS, TEMPLATES } from './constants'
-import type { Framework } from './constants'
+import { FRAMEWORKS, TEMPLATES, commonPackages } from './constants'
+import type { Framework, FrameworkVariant } from './constants'
 import { pkgFromUserAgent } from './utils'
-import { writeTemplateFile } from './file'
+import { settingLint } from './file'
 console.log('TEMPLATES: ', TEMPLATES)
 
 async function init() {
@@ -58,11 +58,17 @@ async function init() {
 
   const pkgInfo = pkgFromUserAgent(process.env.npm_config_user_agent)
 
-  const pkgManager = pkgInfo ? pkgInfo.name : 'npm'
-  const isYarn1 = pkgManager === 'yarn' && pkgInfo?.version.startsWith('1.')
+  const packageManager = pkgInfo ? pkgInfo.name : 'npm'
 
   // const templateDir = path.resolve('./template', `${template}`)
+  const currentFrame: FrameworkVariant = framework?.variants.find(({ name }) => name === template)
+  const { packageList = [] } = currentFrame
+  const resultList = [...commonPackages, ...packageList]
 
-  writeTemplateFile(template)
+  settingLint({
+    packageList: resultList,
+    packageManager,
+    template
+  })
 }
 init()

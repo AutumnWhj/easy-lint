@@ -15,6 +15,7 @@ specifiers:
   husky: ^7.0.4
   kolorist: ^1.6.0
   lint-staged: ^12.3.4
+  nanospinner: ^1.1.0
   prettier: ^2.5.1
   prompts: ^2.4.2
   rimraf: ^3.0.2
@@ -39,6 +40,7 @@ devDependencies:
   husky: 7.0.4
   kolorist: 1.6.0
   lint-staged: 12.3.4
+  nanospinner: 1.1.0
   prettier: 2.5.1
   prompts: 2.4.2
   rimraf: 3.0.2
@@ -2090,6 +2092,12 @@ packages:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+    dev: true
+
+  /nanospinner/1.1.0:
+    resolution: {integrity: sha512-yFvNYMig4AthKYfHFl1sLj7B2nkHL4lzdig4osvl9/LdGbXwrdFRoqBS98gsEsOakr0yH+r5NZ/1Y9gdVB8trA==}
+    dependencies:
+      picocolors: 1.0.0
     dev: true
 
   /natural-compare/1.4.0:

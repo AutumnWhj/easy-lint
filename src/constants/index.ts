@@ -1,19 +1,27 @@
 import { blue, green, cyan, yellow } from 'kolorist'
 type ColorFunc = (str: string | number) => string
-interface Framework {
+export interface Framework {
   name: string
   display: string
   color: ColorFunc
   variants: FrameworkVariant[]
 }
-interface FrameworkVariant {
+export interface FrameworkVariant {
   name: string
   display: string
   color: ColorFunc
   customCommand?: string
+  packageList?: string[]
 }
 
-const FRAMEWORKS: Framework[] = [
+export const commonPackages = [
+  'eslint',
+  'prettier',
+  'eslint-plugin-prettier',
+  'eslint-config-prettier'
+]
+
+export const FRAMEWORKS: Framework[] = [
   {
     name: 'vanilla',
     display: 'Vanilla',
@@ -22,12 +30,14 @@ const FRAMEWORKS: Framework[] = [
       {
         name: 'vanilla',
         display: 'JavaScript',
-        color: yellow
+        color: yellow,
+        packageList: []
       },
       {
         name: 'vanilla-ts',
         display: 'TypeScript',
-        color: blue
+        color: blue,
+        packageList: ['@typescript-eslint/eslint-plugin', '@typescript-eslint/parser']
       }
     ]
   },
@@ -39,12 +49,19 @@ const FRAMEWORKS: Framework[] = [
       {
         name: 'vue',
         display: 'JavaScript',
-        color: yellow
+        color: yellow,
+        packageList: ['vue-eslint-parser', 'eslint-plugin-vue']
       },
       {
         name: 'vue-ts',
         display: 'TypeScript',
-        color: blue
+        color: blue,
+        packageList: [
+          '@typescript-eslint/eslint-plugin',
+          '@typescript-eslint/parser',
+          'vue-eslint-parser',
+          'eslint-plugin-vue'
+        ]
       }
     ]
   },
@@ -56,17 +73,22 @@ const FRAMEWORKS: Framework[] = [
       {
         name: 'react',
         display: 'JavaScript',
-        color: yellow
+        color: yellow,
+        packageList: ['eslint-plugin-react']
       },
       {
         name: 'react-ts',
         display: 'TypeScript',
-        color: blue
+        color: blue,
+        packageList: [
+          '@typescript-eslint/eslint-plugin',
+          '@typescript-eslint/parser',
+          'eslint-plugin-react'
+        ]
       }
     ]
   }
 ]
-const TEMPLATES = FRAMEWORKS.map(
+export const TEMPLATES = FRAMEWORKS.map(
   (f) => (f.variants && f.variants.map((v) => v.name)) || [f.name]
 ).reduce((a, b) => a.concat(b), [])
-export { FRAMEWORKS, TEMPLATES, Framework }

@@ -30,6 +30,7 @@
     "husky": "^7.0.4",
     "kolorist": "^1.6.0",
     "lint-staged": "^12.3.4",
+    "nanospinner": "^1.1.0",
     "prettier": "^2.5.1",
     "prompts": "^2.4.2",
     "rimraf": "^3.0.2",
