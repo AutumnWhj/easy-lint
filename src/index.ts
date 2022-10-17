@@ -1,12 +1,10 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import prompts from 'prompts'
 import { reset, red } from 'kolorist'
 import { FRAMEWORKS, TEMPLATES } from './constants'
 import type { Framework } from './constants'
 import { pkgFromUserAgent } from './utils'
+import { writeTemplateFile } from './file'
 console.log('TEMPLATES: ', TEMPLATES)
-const cwd = process.cwd()
 
 async function init() {
   let result: prompts.Answers<'projectName' | 'overwrite' | 'packageName' | 'framework' | 'variant'>
@@ -65,7 +63,6 @@ async function init() {
 
   // const templateDir = path.resolve('./template', `${template}`)
 
-  const templateDir = path.resolve(fileURLToPath(import.meta.url), '../../template', `${template}`)
-  console.log('templateDir: ', templateDir)
+  writeTemplateFile(template)
 }
 init()
