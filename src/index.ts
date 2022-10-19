@@ -9,7 +9,7 @@ async function init() {
   console.log('result-----', result)
   console.log('run------------')
   // user choice associated with prompts
-  const { framework, overwrite, packageName, variant } = result
+  const { framework, lintTool, packageName, variant } = result
 
   // determine template
   const template: string = variant || framework?.name

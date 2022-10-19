@@ -24,6 +24,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "template"],
+  "include": ["src", "template", "template/vue-ts/.husky"],
   "exclude": ["node_modules", "dist", "**/*.js"]
 }

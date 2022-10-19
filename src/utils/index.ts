@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import prompts from 'prompts'
-import { reset, red } from 'kolorist'
+import { reset, red, underline } from 'kolorist'
 import { FRAMEWORKS } from '../constants'
 import type { Framework } from '../constants'
 
@@ -67,6 +67,12 @@ export const askForProjectLint = async () => {
                 value: variant.name
               }
             })
+        },
+        {
+          type: 'confirm',
+          name: 'lintTool',
+          message: underline('Install husky and lint-stage tool?'),
+          initial: true
         }
       ],
       {
