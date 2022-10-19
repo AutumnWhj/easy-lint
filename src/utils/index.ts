@@ -69,8 +69,18 @@ export const askForProjectLint = async () => {
             })
         },
         {
+          type: 'multiselect',
+          name: 'otherLint',
+          message: underline('Pick other lint'),
+          choices: [
+            { title: 'commitlint', value: 'commitlint' },
+            { title: 'stylelint', value: 'stylelint' }
+          ],
+          hint: '- Space to select. Return to submit'
+        },
+        {
           type: 'confirm',
-          name: 'lintTool',
+          name: 'withTool',
           message: underline('Install husky and lint-stage tool?'),
           initial: true
         }
