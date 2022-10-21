@@ -2,14 +2,15 @@ import { TEMPLATES, commonPackages } from './constants'
 import type { FrameworkVariant } from './constants'
 import { getPackageManager, askForProjectLint } from './utils'
 import { settingLint } from './file'
+import { green } from 'kolorist'
 console.log('TEMPLATES: ', TEMPLATES)
 
 async function init() {
   const result = await askForProjectLint()
   console.log('result-----', result)
-  console.log('run------------')
+  console.log(green('will integrates the default with husky and lint-stage'))
   // user choice associated with prompts
-  const { framework, lintTool, packageName, variant } = result
+  const { framework, otherLint, variant } = result
 
   // determine template
   const template: string = variant || framework?.name

@@ -77,13 +77,13 @@ export const askForProjectLint = async () => {
             { title: 'stylelint', value: 'stylelint' }
           ],
           hint: '- Space to select. Return to submit'
-        },
-        {
-          type: 'confirm',
-          name: 'withTool',
-          message: underline('Install husky and lint-stage tool?'),
-          initial: true
         }
+        // {
+        //   type: 'confirm',
+        //   name: 'withTool',
+        //   message: underline('Install husky and lint-stage tool?'),
+        //   initial: true
+        // }
       ],
       {
         onCancel: () => {
