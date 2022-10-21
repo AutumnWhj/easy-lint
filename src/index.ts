@@ -21,7 +21,8 @@ async function init() {
   settingLint({
     packageList: [...commonPackages, ...packageList],
     packageManager,
-    template
+    template,
+    otherLint
   })
 }
 init()

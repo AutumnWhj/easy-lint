@@ -97,3 +97,29 @@ export const askForProjectLint = async () => {
     return
   }
 }
+
+const write = (file: string, content?: string) => {
+  const targetPath = path.join(root, file)
+  if (content) {
+    fs.writeFileSync(targetPath, content)
+  } else {
+    copy(path.join(root, file), targetPath)
+  }
+}
+export const formatPackageJson = (otherLint: any) => {
+  let script = {
+    'lint:eslint': 'eslint --cache --max-warnings 0  "{src,mock}/**/*.{vue,ts,tsx}" --fix',
+    'lint:prettier': 'prettier --write  "src/**/*.{js,json,tsx,css,less,scss,vue,html,md}"',
+    'lint:lint-staged': 'lint-staged -c ./.lintstagedrc.json'
+  }
+  if (otherLint.includes('stylelint')) {
+    script['lint:stylelint'] =
+      'stylelint --cache --fix "**/*.{vue,less,postcss,css,scss}" --cache --cache-location node_modules/.cache/stylelint/'
+  }
+  const pkg = JSON.parse(fs.readFileSync(path.join(root, `package.json`), 'utf-8'))
+  pkg.script = {
+    ...pkg.script,
+    ...script
+  }
+  write('package.json', JSON.stringify(pkg, null, 2))
+}
