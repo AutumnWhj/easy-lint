@@ -106,6 +106,7 @@ const write = (file: string, content?: string) => {
     copy(path.join(root, file), targetPath)
   }
 }
+// TODO: add husky config and lint-stage config
 export const formatPackageJson = (otherLint: any) => {
   let script = {
     'lint:eslint': 'eslint --cache --max-warnings 0  "{src,mock}/**/*.{vue,ts,tsx}" --fix',
