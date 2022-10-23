@@ -4,10 +4,10 @@ import { fileURLToPath } from 'node:url'
 import { createSpinner } from 'nanospinner'
 import { exec } from 'child_process'
 import { red, green, cyan } from 'kolorist'
+import { eslintConfig, eslintOverrides, commonPackages, eslintPackages } from './constants/config'
+import { root, copy, formatPackageJson, getPackageManager } from './utils'
 
-import { root, copy, formatPackageJson } from './utils'
-
-export const writeTemplateFile = (template: string, otherLint: any[]) => {
+export const writeTemplateFile = (otherLint: any[]) => {
   const templateDir = path.resolve(fileURLToPath(import.meta.url), '../../template')
   const files: string[] = fs.readdirSync(templateDir)
   let filterResult: string[] = files
@@ -27,9 +27,18 @@ export const writeTemplateFile = (template: string, otherLint: any[]) => {
   //   copy(path.join(templateDir, file), targetPath)
   // }
 }
+const writeEslintFile = (eslint) => {
+  const eslintFile = path.join(root, '.eslintrc.json')
+  fs.writeFileSync(eslintFile, JSON.stringify(eslint, null, 2))
+}
 
-export const settingLint = ({ packageList, packageManager, template, otherLint }) => {
+export const settingLint = ({ otherLint, variant }) => {
+  const packageManager = getPackageManager()
+  const eslint = { ...eslintConfig, overrides: eslintOverrides[variant] }
+  const packageList = [...commonPackages, ...eslintPackages[variant]]
   console.log('packageList: ', packageList)
+
+  formatPackageJson(otherLint)
   const commandMap = {
     npm: `npm install --save-dev ${packageList.join(' ')}`,
     yarn: `yarn add --dev ${packageList.join(' ')}`,
@@ -46,8 +55,10 @@ export const settingLint = ({ packageList, packageManager, template, otherLint }
       console.error(error)
       return
     }
-    formatPackageJson(otherLint)
-    writeTemplateFile(template, otherLint)
+
+    writeTemplateFile(otherLint)
+    writeEslintFile(eslint)
+
     spinner.success({ text: green('All done! 🎉'), mark: '✔' })
     console.log(cyan('\n🔥 Reload your editor to activate the settings!'))
   })

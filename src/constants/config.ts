@@ -22,6 +22,14 @@ export const stylelintPackages = [
 export const huskyPackages = ['husky']
 export const lintStagedPackages = ['lint-staged']
 
+export const eslintConfig = {
+  env: {
+    browser: true,
+    es2021: true,
+    node: true
+  },
+  overrides: []
+}
 export const eslintOverrides = {
   vanilla: [
     {
@@ -148,7 +156,7 @@ export const eslintOverrides = {
 }
 
 export const eslintPackages = {
-  vanilla: ['@typescript-eslint/eslint-plugin', '@typescript-eslint/parser'],
+  vanilla: [],
   'vanilla-ts': ['@typescript-eslint/eslint-plugin', '@typescript-eslint/parser'],
   vue: ['vue-eslint-parser', 'eslint-plugin-vue'],
   'vue-ts': [
