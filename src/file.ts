@@ -8,7 +8,7 @@ import { red, green, cyan } from 'kolorist'
 import { root, copy, formatPackageJson } from './utils'
 
 export const writeTemplateFile = (template: string, otherLint: any[]) => {
-  const templateDir = path.resolve(fileURLToPath(import.meta.url), '../../template', `${template}`)
+  const templateDir = path.resolve(fileURLToPath(import.meta.url), '../../template')
   const files: string[] = fs.readdirSync(templateDir)
   let filterResult: string[] = files
   if (otherLint.indexOf('stylelint') === -1) {
@@ -22,7 +22,6 @@ export const writeTemplateFile = (template: string, otherLint: any[]) => {
       (file) => file !== '.cz-config.cjs' && file !== '.commitlintrc.json'
     )
   }
-  console.log('filterResult: ', filterResult)
   // for (const file of files) {
   //   const targetPath = path.join(root, file)
   //   copy(path.join(templateDir, file), targetPath)

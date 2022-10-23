@@ -1,8 +1,8 @@
-import { TEMPLATES, commonPackages } from './constants'
-import type { FrameworkVariant } from './constants'
+import { TEMPLATES } from './constants'
 import { getPackageManager, askForProjectLint } from './utils'
 import { settingLint } from './file'
 import { green } from 'kolorist'
+import { commonPackages, eslintPackages } from './constants/config'
 console.log('TEMPLATES: ', TEMPLATES)
 
 async function init() {
@@ -15,11 +15,9 @@ async function init() {
   // determine template
   const template: string = variant || framework?.name
 
-  const currentFrame: FrameworkVariant = framework?.variants.find(({ name }) => name === template)
-  const { packageList = [] } = currentFrame
   const packageManager = getPackageManager()
   settingLint({
-    packageList: [...commonPackages, ...packageList],
+    packageList: [...commonPackages, ...eslintPackages[variant]],
     packageManager,
     template,
     otherLint

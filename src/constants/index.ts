@@ -11,7 +11,6 @@ export interface FrameworkVariant {
   display: string
   color: ColorFunc
   customCommand?: string
-  packageList?: string[]
 }
 
 export const commonPackages = [
@@ -30,14 +29,12 @@ export const FRAMEWORKS: Framework[] = [
       {
         name: 'vanilla',
         display: 'JavaScript',
-        color: yellow,
-        packageList: []
+        color: yellow
       },
       {
         name: 'vanilla-ts',
         display: 'TypeScript',
-        color: blue,
-        packageList: ['@typescript-eslint/eslint-plugin', '@typescript-eslint/parser']
+        color: blue
       }
     ]
   },
@@ -49,19 +46,12 @@ export const FRAMEWORKS: Framework[] = [
       {
         name: 'vue',
         display: 'JavaScript',
-        color: yellow,
-        packageList: ['vue-eslint-parser', 'eslint-plugin-vue']
+        color: yellow
       },
       {
         name: 'vue-ts',
         display: 'TypeScript',
-        color: blue,
-        packageList: [
-          '@typescript-eslint/eslint-plugin',
-          '@typescript-eslint/parser',
-          'vue-eslint-parser',
-          'eslint-plugin-vue'
-        ]
+        color: blue
       }
     ]
   },
@@ -73,18 +63,12 @@ export const FRAMEWORKS: Framework[] = [
       {
         name: 'react',
         display: 'JavaScript',
-        color: yellow,
-        packageList: ['eslint-plugin-react']
+        color: yellow
       },
       {
         name: 'react-ts',
         display: 'TypeScript',
-        color: blue,
-        packageList: [
-          '@typescript-eslint/eslint-plugin',
-          '@typescript-eslint/parser',
-          'eslint-plugin-react'
-        ]
+        color: blue
       }
     ]
   }
