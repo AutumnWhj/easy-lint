@@ -4,8 +4,15 @@ import { fileURLToPath } from 'node:url'
 import { createSpinner } from 'nanospinner'
 import { exec } from 'child_process'
 import { red, green, cyan } from 'kolorist'
-import { eslintConfig, eslintOverrides, commonPackages, eslintPackages } from './constants/config'
-import { root, copy, formatPackageJson, getPackageManager } from './utils'
+import {
+  eslintConfig,
+  eslintOverrides,
+  commonPackages,
+  eslintPackages,
+  commitlintPackages,
+  stylelintPackages
+} from './constants/config'
+import { root, copy, generatePackageJson, getPackageManager } from './utils'
 
 export const writeTemplateFile = (otherLint: any[]) => {
   const templateDir = path.resolve(fileURLToPath(import.meta.url), '../../template')
@@ -22,31 +29,69 @@ export const writeTemplateFile = (otherLint: any[]) => {
       (file) => file !== '.cz-config.cjs' && file !== '.commitlintrc.json'
     )
   }
-  // for (const file of files) {
-  //   const targetPath = path.join(root, file)
-  //   copy(path.join(templateDir, file), targetPath)
-  // }
+  for (const file of files) {
+    const targetPath = path.join(root, file)
+    copy(path.join(templateDir, file), targetPath)
+  }
 }
 const writeEslintFile = (eslint) => {
   const eslintFile = path.join(root, '.eslintrc.json')
   fs.writeFileSync(eslintFile, JSON.stringify(eslint, null, 2))
 }
+const execHuskyCommand = (otherLint) => {
+  const packageManager = getPackageManager()
+  const initHusky = 'npx husky install'
+  const preCommit = `npx husky add .husky/pre-commit "npm run lint:lint-staged"`
 
+  exec(initHusky, { cwd: root }, (error) => {
+    if (error) {
+      console.error(error)
+      return
+    }
+    exec(preCommit, { cwd: root }, (error) => {
+      if (error) {
+        console.error(error)
+        return
+      }
+    })
+    if (otherLint.includes('commitlint')) {
+      const commitMsg = `npx husky add .husky/commit-msg 'npx --no-install commitlint --edit "$1"'`
+      exec(commitMsg, { cwd: root }, (error) => {
+        if (error) {
+          console.error(error)
+          return
+        }
+      })
+    }
+  })
+}
+
+const getPackageList = ({ otherLint, variant }) => {
+  let result: string[] = []
+  if (otherLint.includes('stylelint')) {
+    result = [...result, ...stylelintPackages]
+  }
+  if (otherLint.includes('commitlint')) {
+    result = [...result, ...commitlintPackages]
+  }
+  return [...commonPackages, ...eslintPackages[variant], ...result]
+}
 export const settingLint = ({ otherLint, variant }) => {
   const packageManager = getPackageManager()
   const eslint = { ...eslintConfig, overrides: eslintOverrides[variant] }
-  const packageList = [...commonPackages, ...eslintPackages[variant]]
+  const packageList = getPackageList({ otherLint, variant })
   console.log('packageList: ', packageList)
 
-  formatPackageJson(otherLint)
+  generatePackageJson({ otherLint, variant })
   const commandMap = {
     npm: `npm install --save-dev ${packageList.join(' ')}`,
     yarn: `yarn add --dev ${packageList.join(' ')}`,
     pnpm: `pnpm install --save-dev ${packageList.join(' ')}`
   }
+
   const installCommand = commandMap[packageManager]
   const spinner = createSpinner('Installing packages...').start()
-  exec(`${installCommand}`, { cwd: root }, (error) => {
+  exec(installCommand, { cwd: root }, (error) => {
     if (error) {
       spinner.error({
         text: red('Failed to install packages!'),
@@ -56,6 +101,7 @@ export const settingLint = ({ otherLint, variant }) => {
       return
     }
 
+    execHuskyCommand(otherLint)
     writeTemplateFile(otherLint)
     writeEslintFile(eslint)
 

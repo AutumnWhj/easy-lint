@@ -1,4 +1,6 @@
 export const commonPackages = [
+  'husky',
+  'lint-staged',
   'eslint',
   'prettier',
   'eslint-plugin-prettier',
@@ -18,9 +20,6 @@ export const stylelintPackages = [
   'stylelint-config-standard',
   'stylelint-order'
 ]
-
-export const huskyPackages = ['husky']
-export const lintStagedPackages = ['lint-staged']
 
 export const eslintConfig = {
   env: {

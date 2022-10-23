@@ -107,20 +107,50 @@ const write = (file: string, content?: string) => {
   }
 }
 // TODO: add husky config and lint-stage config
-export const formatPackageJson = (otherLint: any) => {
-  let script = {
+export const generatePackageJson = ({ otherLint, variant }) => {
+  const huskyConfig = {
+    hooks: {
+      'pre-commit': 'lint-staged'
+    }
+  }
+  const lintStagedConfig = {
+    '*.{js,jsx,ts,tsx}': ['eslint --fix', 'prettier --write'],
+    '{!(package)*.json,*.code-snippets,.!(browserslist)*rc}': ['prettier --write--parser json'],
+    'package.json': ['prettier --write'],
+    '*.md': ['prettier --write']
+  }
+  let scripts = {
     'lint:eslint': 'eslint --cache --max-warnings 0  "{src,mock}/**/*.{vue,ts,tsx}" --fix',
     'lint:prettier': 'prettier --write  "src/**/*.{js,json,tsx,css,less,scss,vue,html,md}"',
-    'lint:lint-staged': 'lint-staged -c ./.lintstagedrc.json'
+    'lint:lint-staged': 'lint-staged',
+    prepare: 'husky install'
   }
+
   if (otherLint.includes('stylelint')) {
-    script['lint:stylelint'] =
+    lintStagedConfig['*.{scss,less,styl,html}'] = ['stylelint --fix', 'prettier --write']
+    scripts['lint:stylelint'] =
       'stylelint --cache --fix "**/*.{vue,less,postcss,css,scss}" --cache --cache-location node_modules/.cache/stylelint/'
   }
+  if (variant.includes('vue')) {
+    if (otherLint.includes('stylelint')) {
+      lintStagedConfig['*.vue'] = ['eslint --fix', 'prettier --write', 'stylelint --fix']
+    } else {
+      lintStagedConfig['*.vue'] = ['eslint --fix', 'prettier --write']
+    }
+  }
+
   const pkg = JSON.parse(fs.readFileSync(path.join(root, `package.json`), 'utf-8'))
-  pkg.script = {
-    ...pkg.script,
-    ...script
+  pkg.scripts = {
+    ...pkg.scripts,
+    ...scripts
+  }
+  pkg['lint-staged'] = {
+    ...pkg['lint-staged'],
+    ...lintStagedConfig
+  }
+  pkg['husky'] = {
+    ...pkg['husky'],
+    ...huskyConfig
   }
   write('package.json', JSON.stringify(pkg, null, 2))
 }
