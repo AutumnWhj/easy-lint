@@ -42,9 +42,18 @@ const writeEslintFile = (eslint) => {
   fs.writeFileSync(eslintFile, JSON.stringify(eslint, null, 2))
 }
 const execHuskyCommand = (otherLint) => {
-  const packageManager = getPackageManager()
+  const initGit = 'git init'
   const initHusky = 'npx husky install'
   const preCommit = `npx husky add .husky/pre-commit "npm run lint:lint-staged"`
+
+  if (!fs.existsSync(path.join(root, '.git'))) {
+    exec(initGit, { cwd: root }, (error) => {
+      if (error) {
+        console.error(error)
+        return
+      }
+    })
+  }
 
   exec(initHusky, { cwd: root }, (error) => {
     if (error) {

@@ -127,7 +127,7 @@ export const generatePackageJson = ({ otherLint, variant }) => {
   }
 
   if (otherLint.includes('stylelint')) {
-    lintStagedConfig['*.{scss,less,styl,html}'] = ['stylelint --fix', 'prettier --write']
+    lintStagedConfig['*.{scss,less,styl}'] = ['stylelint --fix', 'prettier --write']
     scripts['lint:stylelint'] =
       'stylelint --cache --fix "**/*.{vue,less,postcss,css,scss}" --cache --cache-location node_modules/.cache/stylelint/'
   }
