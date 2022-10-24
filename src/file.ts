@@ -92,7 +92,6 @@ export const settingLint = ({ otherLint, variant, isVscode }) => {
   const packageManager = getPackageManager()
   const eslint = { ...eslintConfig, overrides: eslintOverrides[variant] }
   const packageList = getPackageList({ otherLint, variant })
-  console.log('packageList: ', packageList)
 
   generatePackageJson({ otherLint, variant })
   const commandMap = {
