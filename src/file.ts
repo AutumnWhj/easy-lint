@@ -14,7 +14,7 @@ import {
 } from './constants/config'
 import { root, copy, generatePackageJson, getPackageManager } from './utils'
 
-export const writeTemplateFile = (otherLint: any[]) => {
+export const writeTemplateFile = (otherLint: any[], isVscode) => {
   const templateDir = path.resolve(fileURLToPath(import.meta.url), '../../template')
   const files: string[] = fs.readdirSync(templateDir)
   let filterResult: string[] = files
@@ -29,7 +29,10 @@ export const writeTemplateFile = (otherLint: any[]) => {
       (file) => file !== '.cz-config.cjs' && file !== '.commitlintrc.json'
     )
   }
-  for (const file of files) {
+  if (!isVscode) {
+    filterResult = filterResult.filter((file) => file !== '.vscode')
+  }
+  for (const file of filterResult) {
     const targetPath = path.join(root, file)
     copy(path.join(templateDir, file), targetPath)
   }
@@ -76,7 +79,7 @@ const getPackageList = ({ otherLint, variant }) => {
   }
   return [...commonPackages, ...eslintPackages[variant], ...result]
 }
-export const settingLint = ({ otherLint, variant }) => {
+export const settingLint = ({ otherLint, variant, isVscode }) => {
   const packageManager = getPackageManager()
   const eslint = { ...eslintConfig, overrides: eslintOverrides[variant] }
   const packageList = getPackageList({ otherLint, variant })
@@ -102,7 +105,7 @@ export const settingLint = ({ otherLint, variant }) => {
     }
 
     execHuskyCommand(otherLint)
-    writeTemplateFile(otherLint)
+    writeTemplateFile(otherLint, isVscode)
     writeEslintFile(eslint)
 
     spinner.success({ text: green('All done! 🎉'), mark: '✔' })
