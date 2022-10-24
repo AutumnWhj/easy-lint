@@ -1,11 +1,11 @@
 {
-  "name": "easy-lint",
-  "version": "1.0.0",
+  "name": "create-easy-lint",
+  "version": "1.0.4",
   "description": "",
   "main": "lib/bundle.cjs.js",
   "module": "lib/bundle.esm.js",
   "bin": {
-    "easy-lint": "bin/index.js"
+    "create-easy-lint": "bin/index.js"
   },
   "scripts": {
     "build": "rimraf lib/* && rollup -c",
@@ -13,8 +13,13 @@
     "lint:eslint": "eslint --fix",
     "lint:prettier": "prettier --write --loglevel warn"
   },
-  "author": "Autumn",
+  "author": "autumnwhj",
   "license": "ISC",
+  "dependencies": {
+    "kolorist": "^1.6.0",
+    "nanospinner": "^1.1.0",
+    "prompts": "^2.4.2"
+  },
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",
@@ -28,16 +33,14 @@
     "@vitest/coverage-c8": "^0.23.4",
     "eslint": "^8.9.0",
     "husky": "^7.0.4",
-    "kolorist": "^1.6.0",
     "lint-staged": "^12.3.4",
-    "nanospinner": "^1.1.0",
     "prettier": "^2.5.1",
-    "prompts": "^2.4.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.68.0",
     "rollup-plugin-node-externals": "^4.0.0",
     "tslib": "^2.3.1",
     "typescript": "^4.5.5",
     "vitest": "^0.23.4"
-  }
+  },
+  "repository": "git@github.com:AutumnWhj/easy-lint.git"
 }

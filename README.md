@@ -8,11 +8,11 @@ After creating a project. You can run this command inside the project.
 
 ```sh
 // NPM
-npm init easy-lint
+npm create easy-lint
 
 // YARN
 yarn create easy-lint
 
 // PNPM
-pnpm init easy-lint
+pnpm create easy-lint
 ```
