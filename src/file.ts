@@ -4,24 +4,17 @@ import { fileURLToPath } from 'node:url'
 import { createSpinner } from 'nanospinner'
 import { exec } from 'child_process'
 import { red, green, cyan } from 'kolorist'
-import {
-  eslintConfig,
-  eslintOverrides,
-  commonPackages,
-  eslintPackages,
-  commitlintPackages,
-  stylelintPackages
-} from './constants/config'
-import { root, copy, generatePackageJson, getPackageManager } from './utils'
+import { commonPackages, eslintPackages, commitlintPackages } from './constants/config'
+import { getEslintConfig, getStylelintConfig, getStylelintPackages } from './shared'
 
-export const writeTemplateFile = (otherLint: any[], isVscode) => {
+import { root, copy, generatePackageJson, getPackageManager, writeJsonFile } from './utils'
+
+const writeTemplateFile = (otherLint: any[], isVscode) => {
   const templateDir = path.resolve(fileURLToPath(import.meta.url), '../../template')
   const files: string[] = fs.readdirSync(templateDir)
   let filterResult: string[] = files
   if (otherLint.indexOf('stylelint') === -1) {
-    filterResult = filterResult.filter(
-      (file) => file !== '.stylelintignore' && file !== '.stylelintrc.json'
-    )
+    filterResult = filterResult.filter((file) => file !== '.stylelintignore')
   }
 
   if (otherLint.indexOf('commitlint') === -1) {
@@ -30,17 +23,14 @@ export const writeTemplateFile = (otherLint: any[], isVscode) => {
     )
   }
   if (!isVscode) {
-    filterResult = filterResult.filter((file) => file !== '.vscode')
+    filterResult = filterResult.filter((file) => file !== '.vscode' && file !== 'settings.json')
   }
   for (const file of filterResult) {
     const targetPath = path.join(root, file)
     copy(path.join(templateDir, file), targetPath)
   }
 }
-const writeEslintFile = (eslint) => {
-  const eslintFile = path.join(root, '.eslintrc.json')
-  fs.writeFileSync(eslintFile, JSON.stringify(eslint, null, 2))
-}
+
 const execHuskyCommand = (otherLint) => {
   const initGit = 'git init'
   const initHusky = 'npx husky install'
@@ -81,16 +71,17 @@ const execHuskyCommand = (otherLint) => {
 const getPackageList = ({ otherLint, variant }) => {
   let result: string[] = []
   if (otherLint.includes('stylelint')) {
-    result = [...result, ...stylelintPackages]
+    result = [...result, ...getStylelintPackages(variant)]
   }
   if (otherLint.includes('commitlint')) {
     result = [...result, ...commitlintPackages]
   }
   return [...commonPackages, ...eslintPackages[variant], ...result]
 }
-export const settingLint = ({ otherLint, variant, isVscode }) => {
+
+export const setLint = ({ otherLint, variant, isVscode }) => {
   const packageManager = getPackageManager()
-  const eslint = { ...eslintConfig, overrides: eslintOverrides[variant] }
+
   const packageList = getPackageList({ otherLint, variant })
 
   generatePackageJson({ otherLint, variant })
@@ -114,7 +105,9 @@ export const settingLint = ({ otherLint, variant, isVscode }) => {
 
     execHuskyCommand(otherLint)
     writeTemplateFile(otherLint, isVscode)
-    writeEslintFile(eslint)
+
+    writeJsonFile('.eslintrc.json', getEslintConfig(variant))
+    writeJsonFile('.stylelintrc.json', getStylelintConfig(variant))
 
     spinner.success({ text: green('All done! 🎉'), mark: '✔' })
     console.log(cyan('\n🔥 Reload your editor to activate the settings!'))

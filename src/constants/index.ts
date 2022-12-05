@@ -13,13 +13,6 @@ export interface FrameworkVariant {
   customCommand?: string
 }
 
-export const commonPackages = [
-  'eslint',
-  'prettier',
-  'eslint-plugin-prettier',
-  'eslint-config-prettier'
-]
-
 export const FRAMEWORKS: Framework[] = [
   {
     name: 'vanilla',

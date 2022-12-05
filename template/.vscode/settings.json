@@ -40,12 +40,6 @@
   },
   "eslint.validate": ["typescript", "javascript", "javascriptreact"],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "vetur.format.enable": false,
-  "vetur.completion.scaffoldSnippetSources": {
-    "user": "🗒️",
-    "workspace": "💼",
-    "vetur": ""
-  },
 
   // ===
   // JS(ON)
@@ -53,8 +47,6 @@
 
   "javascript.format.enable": false,
   "json.format.enable": false,
-  "vetur.validation.script": false,
-
   // ===
   // MARKDOWN
   // ===

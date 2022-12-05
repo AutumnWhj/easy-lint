@@ -17,7 +17,7 @@ function pkgFromUserAgent(userAgent: string | undefined) {
 }
 export const getPackageManager = () => {
   const pkgInfo = pkgFromUserAgent(process.env.npm_config_user_agent)
-  return pkgInfo ? pkgInfo.name : 'npm'
+  return pkgInfo ? pkgInfo.name : 'pnpm'
 }
 
 export function copy(src: string, dest: string) {
@@ -82,7 +82,7 @@ export const askForProjectLint = async () => {
           type: 'confirm',
           name: 'isVscode',
           message: underline('loading default vscode setting?'),
-          initial: false
+          initial: true
         }
       ],
       {
@@ -153,4 +153,17 @@ export const generatePackageJson = ({ otherLint, variant }) => {
     ...huskyConfig
   }
   write('package.json', JSON.stringify(pkg, null, 2))
+}
+
+export const writeJsonFile = (fileName, json) => {
+  const filePath = path.join(root, fileName)
+  fs.writeFileSync(filePath, JSON.stringify(json, null, 2))
+}
+
+export const checkPackageFile = () => {
+  if (!fs.existsSync(path.join(root, '.package.json'))) {
+    console.log(red('✖') + 'no such file or directory: .package.json')
+    return false
+  }
+  return true
 }
