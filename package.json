@@ -1,6 +1,6 @@
 {
   "name": "create-easy-lint",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "",
   "main": "lib/bundle.cjs.js",
   "module": "lib/bundle.esm.js",
@@ -13,8 +13,6 @@
     "lint:eslint": "eslint --fix",
     "lint:prettier": "prettier --write --loglevel warn"
   },
-  "author": "autumnwhj",
-  "license": "ISC",
   "dependencies": {
     "kolorist": "^1.6.0",
     "nanospinner": "^1.1.0",
@@ -42,5 +40,14 @@
     "typescript": "^4.5.5",
     "vitest": "^0.23.4"
   },
-  "repository": "git@github.com:AutumnWhj/easy-lint.git"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AutumnWhj/easy-lint"
+  },
+  "author": "Jin (https://github.com/AutumnWhj)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AutumnWhj/easy-lint/issues"
+  },
+  "homepage": "https://github.com/AutumnWhj/easy-lint#readme"
 }
