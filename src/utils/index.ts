@@ -161,8 +161,8 @@ export const writeJsonFile = (fileName, json) => {
 }
 
 export const checkPackageFile = () => {
-  if (!fs.existsSync(path.join(root, '.package.json'))) {
-    console.log(red('✖') + 'no such file or directory: .package.json')
+  if (!fs.existsSync(path.join(root, 'package.json'))) {
+    console.log(red('✖') + 'no such file or directory: package.json')
     return false
   }
   return true

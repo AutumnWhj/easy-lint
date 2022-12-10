@@ -1,6 +1,6 @@
 {
   "name": "create-easy-lint",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "main": "lib/bundle.cjs.js",
   "module": "lib/bundle.esm.js",
